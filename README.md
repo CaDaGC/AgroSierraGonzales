@@ -21,5 +21,6 @@ Aplicación móvil Android en Kotlin y Jetpack Compose con Clean Architecture. E
 
 Abre esta carpeta en Android Studio, sincroniza Gradle y ejecuta la configuración `androidApp`. También puedes compilar con `gradlew.bat :androidApp:assembleDebug`; las pruebas comunes se ejecutan con `gradlew.bat :shared:testDebugUnitTest`.
 
-La app incluye login, lista y detalle de lotes, búsqueda y filtro por valle, registro local offline de labores, marca de pendientes, sincronización manual y automática al iniciar/restaurar sesión, edición/eliminación según privilegios, cierre de campaña para Jefe de Campo y cierre de sesión. La sincronización envía los pendientes antes de descargar lotes y labores permitidas por el perfil.
+La app incluye login, lista y detalle de lotes, búsqueda y filtro por valle, registro local offline de labores, marca de pendientes, sincronización manual y automática al iniciar/restaurar sesión y al recuperar la conexión, edición/eliminación según privilegios, cierre de campaña para Jefe de Campo y cierre de sesión. La sincronización envía los pendientes antes de descargar lotes y labores permitidas por el perfil.
+
 

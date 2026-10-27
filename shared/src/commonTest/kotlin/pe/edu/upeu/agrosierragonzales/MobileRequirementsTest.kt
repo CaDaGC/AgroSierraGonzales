@@ -22,7 +22,7 @@ class MobileRequirementsTest {
   val driver=JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
   AgroDatabase.Schema.create(driver)
   val db=AgroDatabase(driver)
-  db.laborQueries.insertLabor(-1,1,"RIEGO","2026-10-27","Ana",2.0,"turno mañana",1)
+  db.laborQueries.insertLabor(-1,1,"RIEGO","2026-10-27","Ana",2.0,"turno mañana",1,"CREATE")
   assertEquals(-1L,db.laborQueries.selectPending().executeAsOne().id)
   driver.close()
  }
@@ -32,6 +32,12 @@ class MobileRequirementsTest {
   val repo=AgroRepositoryImpl(AgroApi(createHttpClient(engine){null}),store)
   val saved=repo.createLabor(labor).getOrThrow()
   assertTrue(saved.id<0);assertTrue(saved.pendiente);assertEquals(1,store.rows.size)
+ }
+ @Test fun offlineEditsAndDeletesRemainQueued()=runTest {
+  val store=MemoryStore();val engine=MockEngine{throw IOException("offline")};val repo=AgroRepositoryImpl(AgroApi(createHttpClient(engine){null}),store)
+  val existing=labor.copy(id=12,pendiente=false);val edited=repo.editLabor(existing.copy(observacion="corregida")).getOrThrow()
+  assertTrue(edited.pendiente);assertEquals(SyncOperation.UPDATE,edited.syncOperation)
+  repo.deleteLabor(edited).getOrThrow();assertEquals(SyncOperation.DELETE,store.rows.single().syncOperation)
  }
  @Test fun syncPushesPendingBeforeRefreshingFromServer()=runTest {
   val store=MemoryStore().apply{rows+=labor.copy(id=-1,pendiente=true)}
@@ -67,5 +73,6 @@ class MobileRequirementsTest {
   override suspend fun deleteLabor(id:Long){rows.removeAll{it.id==id}}
  }
 }
+
 
 
