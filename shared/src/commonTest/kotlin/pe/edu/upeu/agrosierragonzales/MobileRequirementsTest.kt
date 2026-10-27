@@ -64,6 +64,8 @@ class MobileRequirementsTest {
   override suspend fun addPending(x:Labor):Labor{val next=(rows.filter{it.id<0}.minOfOrNull{it.id}?:0)-1;return x.copy(id=next,pendiente=true).also{rows+=it}}
   override suspend fun pending()=rows.filter{it.pendiente}
   override suspend fun markSynced(localId:Long,x:Labor){rows.removeAll{it.id==localId};rows+=x.copy(pendiente=false)}
+  override suspend fun deleteLabor(id:Long){rows.removeAll{it.id==id}}
  }
 }
+
 

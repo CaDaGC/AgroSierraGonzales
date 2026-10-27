@@ -5,3 +5,4 @@ insertLabor: INSERT OR REPLACE INTO labor VALUES(?,?,?,?,?,?,?,?);
 nextTemporaryId: SELECT COALESCE(MIN(id),0)-1 FROM labor WHERE id<0;
 deleteLocal: DELETE FROM labor WHERE id=?;
 
+deleteById: DELETE FROM labor WHERE id=?;

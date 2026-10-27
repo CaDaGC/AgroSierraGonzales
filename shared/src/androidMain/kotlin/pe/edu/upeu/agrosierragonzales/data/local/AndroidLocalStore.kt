@@ -16,7 +16,9 @@ class AndroidLocalStore(c:Context):LocalStore{
  override suspend fun addPending(x:Labor):Labor{var a=x;db.transaction{a=x.copy(id=db.laborQueries.nextTemporaryId().executeAsOne(),pendiente=true);db.laborQueries.insertLabor(a.id,a.loteId,a.tipo.name,a.fecha,a.responsable,a.cantidad,a.observacion,1L)};return a}
  override suspend fun pending()=db.laborQueries.selectPending().executeAsList().map{Labor(it.id,it.loteId,TipoLabor.valueOf(it.tipo),it.fecha,it.responsable,it.cantidad,it.observacion,it.pendiente != 0L)}
  override suspend fun markSynced(localId:Long,x:Labor){db.transaction{db.laborQueries.deleteLocal(localId);db.laborQueries.insertLabor(x.id,x.loteId,x.tipo.name,x.fecha,x.responsable,x.cantidad,x.observacion,0L)}}
+ override suspend fun deleteLabor(id:Long){db.transaction{db.laborQueries.deleteById(id)}}
 }
+
 
 
 

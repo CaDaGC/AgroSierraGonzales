@@ -1,6 +1,25 @@
 # AgroSierraGonzales
-Aplicación Android de Kotlin y Compose con Clean Architecture. Módulos `shared` (KMP Android target, dominio y datos) y `androidApp`; no configura destinos iOS.
-Capas: `domain` (modelos, contratos, casos de uso), `data` (Ktor, DTO, SQLDelight, repositorios), `presentation` (Compose y StateFlow), `di` (Koin). Token de sesión cifrado AES-GCM con Android Keystore.
-Requiere Android Studio, Android SDK 36 y backend iniciado en el puerto 8080. En emulador `10.0.2.2` accede al localhost del equipo; URL en `shared/.../HttpClientFactory.kt`.
-Abre la carpeta en Android Studio, sincroniza Gradle y ejecuta `androidApp`. Implementa login, lista/detalle de lotes, registro de labores offline y online, indicador pendiente, sincronización manual (sube pendientes antes de descargar) y cierre de sesión.
+
+Aplicación móvil Android en Kotlin y Jetpack Compose con Clean Architecture. El proyecto tiene módulos `shared` (dominio, datos y presentación Android) y `androidApp`; no configura destinos ni código iOS.
+
+## Requisitos y conexión
+
+- Android Studio, Android SDK 36 y JDK 17 o superior.
+- Inicia el backend Spring Boot y MySQL en el puerto 8080.
+- En el emulador Android, `10.0.2.2` apunta al localhost del equipo. La URL y los timeout HTTP están centralizados en `shared/src/commonMain/.../HttpClientFactory.kt`.
+- Para iniciar sesión con los datos semilla del backend: `tecnico1`, `jefe1` o `admin`; contraseña inicial `Agro2026*`.
+
+## Arquitectura
+
+- `domain`: modelos, errores, interfaces de repositorios y casos de uso.
+- `data`: DTO y mapeadores, cliente Ktor, repositorios offline-first y persistencia SQLDelight.
+- `presentation`: pantallas Compose y estado observable con StateFlow.
+- `di`: módulos de inyección Koin.
+- Token y sesión cifrados con AES-GCM y Android Keystore.
+
+## Ejecutar
+
+Abre esta carpeta en Android Studio, sincroniza Gradle y ejecuta la configuración `androidApp`. También puedes compilar con `gradlew.bat :androidApp:assembleDebug`; las pruebas comunes se ejecutan con `gradlew.bat :shared:testDebugUnitTest`.
+
+La app incluye login, lista y detalle de lotes, búsqueda y filtro por valle, registro local offline de labores, marca de pendientes, sincronización manual y automática al iniciar/restaurar sesión, edición/eliminación según privilegios, cierre de campaña para Jefe de Campo y cierre de sesión. La sincronización envía los pendientes antes de descargar lotes y labores permitidas por el perfil.
 
